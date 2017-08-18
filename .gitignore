@@ -1,0 +1,5 @@
+.DS*
+.pyc
+myj/
+myjournal.egg-info/
+myjournal.db
