@@ -1,17 +1,40 @@
-<!doctype html>
-<title>My Journal</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<div class=page>
-  <h1>Journal</h1>
-  <div class=metanav>
-  {% if not session.logged_in %}
-    <a href="{{ url_for('login') }}">log in</a>
-  {% else %}
-    <a href="{{ url_for('logout') }}">log out</a>
-  {% endif %}
-  </div>
-  {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-  {% endfor %}
-  {% block body %}{% endblock %}
+{% extends "bootstrap/base.html" %}
+
+{% block title %}My Journal{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+              data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">My Journal</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+				<li><a href="/">Home</a></li>
+				{% if not session.logged_in %}
+					<li><a href="{{ url_for('login') }}">log in</a></li>
+				{% else %}
+					<li><a href="{{ url_for('logout') }}">log out</a></li>
+				{% endif %}
+            </ul>  
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>My Journal</h1>
+	{% for message in get_flashed_messages() %}
+    	<div class=flash>{{ message }}</div>
+	{% endfor %}
+</div>
+{% endblock %}
+

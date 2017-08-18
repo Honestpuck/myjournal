@@ -4,12 +4,12 @@ import sqlite3
 import time
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
-# from flask.ext.bootstrap import Bootstrap
+from flask.ext.bootstrap import Bootstrap
 
 app = Flask(__name__) # create the application instance :)
 app.config.from_object(__name__) # load config from this file , flaskr.py
 
-# bootstrap = Bootstrap(app)
+bootstrap = Bootstrap(app)
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
