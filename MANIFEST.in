@@ -1,0 +1,3 @@
+graft myjournal/static
+graft myjournal/templates
+include myjournal/schema.sql

@@ -1,0 +1,1 @@
+from .myjournal import app
