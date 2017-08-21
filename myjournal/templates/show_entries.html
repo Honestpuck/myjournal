@@ -1,18 +1,12 @@
 {% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %} 
+
 {% block content %}
 {{ super() }}
 
 <div class="container">
   {% if session.logged_in %}
-    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
-      <dl>
-        <dt>Title:
-        <dd><input type=text size=30 name=title>
-        <dt>Text:
-        <dd><textarea name=text rows=10 cols=80></textarea>
-        <dd><input type=submit value=Share>
-      </dl>
-    </form>
+	{{ wtf.quick_form(form) }}
   {% endif %}
   <ul class=entries>
   {% for entry in entries %}

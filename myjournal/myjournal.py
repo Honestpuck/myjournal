@@ -4,7 +4,10 @@ import sqlite3
 import time
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
-from flask.ext.bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm 
+from wtforms import StringField, SubmitField, TextAreaField 
+from wtforms.validators import Required
 
 app = Flask(__name__) # create the application instance :)
 app.config.from_object(__name__) # load config from this file , flaskr.py
@@ -52,12 +55,33 @@ def initdb_command():
     init_db()
     print('Initialized the database.')
 
-@app.route('/')
+## views
+
+class PostForm(FlaskForm):
+	title = StringField('Title')
+	text = TextAreaField('Body', validators=[Required()])
+	submit = SubmitField('Post')
+
+@app.route('/', methods=['GET', 'POST'])
 def show_entries():
     db = get_db()
     cur = db.execute('select title, text, createtime from entries order by id desc')
     entries = cur.fetchall()
-    return render_template('show_entries.html', entries=entries)
+    title = None
+    text = None
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        text = form.text.data
+    	db = get_db()
+    	db.execute('insert into entries (title, text, createtime) values (?, ?, ?)', \
+    		[title, text, time.time()])
+    	db.commit()
+    	flash('New entry was successfully posted')
+    	return redirect(url_for('show_entries'))
+    return render_template('show_entries.html', \
+    	entries=entries, form=form, title=title, text=text)
+
 
 @app.route('/add', methods=['POST'])
 def add_entry():
@@ -65,7 +89,7 @@ def add_entry():
         abort(401)
     db = get_db()
     db.execute('insert into entries (title, text, createtime) values (?, ?, ?)',
-                 [request.form['title'], request.form['text'], time.time()])
+                 [title, text, time.time()])
     db.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))

@@ -8,5 +8,6 @@ setup(
         'flask',
         'markdown2',
         'flask-bootstrap',
+        'flask-wtf',
     ],
 )
