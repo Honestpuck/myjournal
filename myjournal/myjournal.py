@@ -3,7 +3,7 @@ import os
 import sqlite3
 import time
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+     render_template, flash, jsonify
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, SubmitField, TextAreaField 
@@ -81,18 +81,6 @@ def show_entries():
     	return redirect(url_for('show_entries'))
     return render_template('show_entries.html', \
     	entries=entries, form=form, title=title, text=text)
-
-
-@app.route('/add', methods=['POST'])
-def add_entry():
-    if not session.get('logged_in'):
-        abort(401)
-    db = get_db()
-    db.execute('insert into entries (title, text, createtime) values (?, ?, ?)',
-                 [title, text, time.time()])
-    db.commit()
-    flash('New entry was successfully posted')
-    return redirect(url_for('show_entries'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
