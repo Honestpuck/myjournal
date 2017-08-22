@@ -8,14 +8,12 @@
   {% if session.logged_in %}
 	{{ wtf.quick_form(form) }}
   {% endif %}
-  <ul class=entries>
   {% for entry in entries %}
-    <li><h2>{{ entry.title }}</h2><br>{{ entry.createtime | fmttime }}<br>
-    {{ entry.text | mdown | safe}}
+    <h2>{{ entry.title }}<br></h2>{{ entry.createtime | fmttime }}
+    <div class=entry>{{ entry.text | mdown | safe}}</div>
   {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
+    <em>Unbelievable.  No entries here so far</em>
   {% endfor %}
-  </ul>
 </div>
 
 {% endblock %}

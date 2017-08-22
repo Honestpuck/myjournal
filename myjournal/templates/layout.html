@@ -1,4 +1,8 @@
 {% extends "bootstrap/base.html" %}
+{% block head %}
+	{{ super() }}
+	<link href="/static/style.css" rel="stylesheet">
+{% endblock %}
 
 {% block title %}My Journal{% endblock %}
 
@@ -30,7 +34,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="page">
     <h1>My Journal</h1>
 	{% for message in get_flashed_messages() %}
     	<div class=flash>{{ message }}</div>
