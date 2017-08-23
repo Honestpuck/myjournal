@@ -1,7 +1,7 @@
 drop table if exists entries;
 create table entries (
   id integer primary key autoincrement,
-  title text not null,
+  title text,
   'text' text not null,
   createtime integer
 );

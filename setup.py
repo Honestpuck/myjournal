@@ -9,5 +9,7 @@ setup(
         'markdown2',
         'flask-bootstrap',
         'flask-wtf',
+        'flask-sqlalchemy',
+        'flask-script'
     ],
 )
