@@ -51,8 +51,8 @@ class PostForm(FlaskForm):
 
 @app.route('/', methods=['GET', 'POST'])
 def show_entries():
-	Entry.query.order_by('id desc')
-	entries = Entry.query.all()
+	Entry.query.order_by('id')
+	entries = list(reversed(Entry.query.all()))
 	title = None
 	text = None
 	form = PostForm()
