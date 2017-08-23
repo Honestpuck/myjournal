@@ -10,7 +10,7 @@ from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
-from flask_script import Manager
+from flask_script import Manager, Shell
 
 app = Flask(__name__) # create the application instance :)
 app.config.from_object(__name__) # load config from this file , myjournal.py
@@ -43,7 +43,6 @@ class Entry( db.Model):
 		return '< Entry %r >' % self.title
 
 ## views
-
 class PostForm(FlaskForm):
 	title = StringField('Title')
 	text = TextAreaField('Body', validators=[Required()])
@@ -104,6 +103,12 @@ mdExt = [
 def mdown(value):
 	md = markdown2.Markdown(extras=mdExt)
 	return md.convert(value)
+
+# flask-script stuff
+def make_shell_context():
+	return dict(app=app, db=db, Entry=Entry)
+	
+manager.add_command("shell", Shell(make_context=make_shell_context))
 
 if __name__ == '__main__':
 	manager.run()
