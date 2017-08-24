@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% import "bootstrap/wtf.html" as wtf %} 
+{% import "macros.html" as macros %}
 
 {% block content %}
 {{ super() }}
@@ -19,6 +20,9 @@
   {% else %}
     <em>Unbelievable.  No entries here so far</em>
   {% endfor %}
+  <div class="pagination">
+  	{{ macros.pagination_widget(pagination, '.show_entries') }}
+  </div>
 </div>
 
 {% endblock %}

@@ -26,6 +26,7 @@ app.config.update(dict(
 	SQLALCHEMY_DATABASE_URI='sqlite:///' + os.path.join(app.root_path, 'myjournal.db'),
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True,
 	SQLALCHEMY_TRACK_MODIFICATIONS = False,
+	MYJ_PER_PAGE=5,
 ))
 app.config.from_envvar('MYJ_SETTINGS', silent=True)
 
@@ -50,7 +51,10 @@ class PostForm(FlaskForm):
 
 @app.route('/', methods=['GET', 'POST'])
 def show_entries():
-	entries = Entry.query.order_by(Entry.id.desc()).all()
+	page = request.args.get('page', 1, type=int)
+	pagination = Entry.query.order_by(Entry.id.desc()).paginate(page, \
+		per_page=app.config['MYJ_PER_PAGE'], error_out=False)
+	entries = pagination.items
 	title = None
 	text = None
 	form = PostForm()
@@ -63,7 +67,7 @@ def show_entries():
 		flash('New entry was successfully posted')
 		return redirect(url_for('show_entries'))
 	return render_template('show_entries.html', \
-		entries=entries, form=form, title=title, text=text)
+		entries=entries, form=form, title=title, text=text, pagination=pagination)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
