@@ -7,16 +7,29 @@
 
 <div class="container">
   {% if session.logged_in %}
-<form method="POST" action="">
-    {{ form.csrf_token }}
-    {{ form.title.label }}<br> {{ form.title(size=80) }}<br><br>
-    {{ form.text.label }}<br> {{ form.text(cols=80, rows=10) }}<br><br>
-    
-    <input type="submit" value="Post">
-</form>  {% endif %}
+	<form method="POST" action="">
+		{{ form.csrf_token }}
+		{{ form.title.label }}<br> {{ form.title(size=80) }}<br><br>
+		{{ form.text.label }}<br> {{ form.text(cols=80, rows=10) }}<br><br>
+
+		<input type="submit" value="Post">
+	</form>
+	<p>&nbsp;</p>
+  {% endif %}
   {% for entry in entries %}
-    <h2>{{ entry.title }}</h2>{{ entry.createtime | fmttime }}
-    <div class=entry>{{ entry.text | mdown | safe}}</div>
+  	<div class=post>
+		<h2>{{ entry.title }}</h2>
+		<strong>{{ entry.createtime | fmttime }}</strong>
+		<div class=entry-body>
+			{{ entry.text | mdown | safe}}
+		</div>
+		<div class=entry-edit>
+			<a href="{{ url_for('.edit_entry', id=entry.id) }}">
+				<span class="label">Edit</span>
+			</a>
+		</div>
+	</div>
+	<p>&nbsp;</p>
   {% else %}
     <em>Unbelievable.  No entries here so far</em>
   {% endfor %}

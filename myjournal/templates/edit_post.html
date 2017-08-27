@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %} 
+{% import "macros.html" as macros %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block content %}
+{{ super() }}
+<div class="container">
+	<div class="page-header"><h1>Edit Post</h1> </div> 
+	<div> 
+		<form method="POST" action="">
+			{{ form.csrf_token }}
+			{{ form.title.label }}<br> {{ form.title(size=80) }}<br><br>
+			{{ form.text.label }}<br> {{ form.text(cols=80, rows=10) }}<br><br>
+	
+			<input type="submit" value="Post">
+		</form> 
+	</div>
+</div>
+{% endblock %} 
+

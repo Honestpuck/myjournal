@@ -33,21 +33,38 @@ app.config.from_envvar('MYJ_SETTINGS', silent=True)
 # Database stuff
 db = SQLAlchemy(app)
 
-class Entry( db.Model):
-	 __tablename__ = 'entries' 
-	 id = db.Column( db.Integer, primary_key = True) 
+class Entry(db.Model):
+	 __tablename__ = 'entries'
+	 id = db.Column( db.Integer, primary_key=True) 
 	 title = db.Column(db.Text, nullable=True) 
 	 text = db.Column(db.Text)
 	 createtime = db.Column(db.Integer, index=True)
 	 
 	 def __repr__( self): 
-		return '< Entry %r >' % self.title
+		return '<Entry %r>' % self.title
 
 ## views
 class PostForm(FlaskForm):
 	title = StringField('Title')
 	text = TextAreaField('Body', validators=[Required()])
 	submit = SubmitField('Post')
+	
+@app.route('/edit', methods=['GET', 'POST'])
+def edit_entry():
+	entry = request.args.get('id', 1, type=int)
+	post = Entry.query.get_or_404(entry)
+	form = PostForm()
+	if form.validate_on_submit():
+		post.text = form.text.data
+		post.title = form.title.data
+		db.session.add(post)
+		flash('The post has been updated.')
+		return redirect(url_for('.show_entries'))
+	form.text.data = post.text
+	form.title.data = post.title
+	return render_template('edit_post.html', form=form)
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def show_entries():

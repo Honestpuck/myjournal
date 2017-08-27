@@ -7,16 +7,16 @@
 		{% if p %} 
 			{% if p == pagination.page %} 
 				<li class =" active" > 
-					<a href="{{ url_for(endpoint, page=p, ** kwargs) }}" >{{ p }} </a> 
+					<a href="{{ url_for(endpoint, page=p, ** kwargs) }}" >{{ p }}</a> 
 				</li>
 			{% else %} 
 				<li> 
-					<a href="{{ url_for( endpoint, page=p, ** kwargs) }}" >{{ p }} </a>
-				</li> 
+					<a href="{{ url_for( endpoint, page=p, ** kwargs) }}" >{{ p }}</a>
+				</li>
 			{% endif %} 
 		{% else %}
 			<li class="disabled" >
-				<a href ="#" >&hellip; </a>
+				<a href ="#" >&hellip;</a>
 			</li>
 		{% endif %}
 	{% endfor %}
