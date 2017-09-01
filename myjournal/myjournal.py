@@ -51,7 +51,7 @@ class PostForm(FlaskForm):
 	
 @app.route('/edit', methods=['GET', 'POST'])
 def edit_entry():
-	if not session['logged_in'] == True:
+	if not 'logged_in' in session:
 		return redirect(url_for('login'))
 	entry = request.args.get('id', 1, type=int)
 	post = Entry.query.get_or_404(entry)
@@ -68,7 +68,7 @@ def edit_entry():
 
 @app.route('/', methods=['GET', 'POST'])
 def show_entries():
-	if not session['logged_in'] == True:
+	if not 'logged_in' in session:
 		return redirect(url_for('login'))
 	page = request.args.get('page', 1, type=int)
 	pagination = Entry.query.order_by(Entry.id.desc()).paginate(page, \
