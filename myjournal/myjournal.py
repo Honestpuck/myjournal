@@ -1,7 +1,7 @@
 # all the imports
 import os
-import sqlite3 # deprecated
 import time
+import markdown2
 from flask import Flask, request, session, g, redirect, url_for, abort, \
 	 render_template, flash, jsonify
 from flask_bootstrap import Bootstrap
@@ -18,7 +18,7 @@ app.config.from_object(__name__) # load config from this file , myjournal.py
 bootstrap = Bootstrap(app)
 manager = Manager(app)
 
-# Load default config and override config from an environment variable
+# Load default config and then override config from an environment variable
 app.config.update(dict(
 	SECRET_KEY='development key',
 	USERNAME='admin',
@@ -51,6 +51,8 @@ class PostForm(FlaskForm):
 	
 @app.route('/edit', methods=['GET', 'POST'])
 def edit_entry():
+	if not session['logged_in'] == True:
+		return redirect(url_for('login'))
 	entry = request.args.get('id', 1, type=int)
 	post = Entry.query.get_or_404(entry)
 	form = PostForm()
@@ -64,10 +66,10 @@ def edit_entry():
 	form.title.data = post.title
 	return render_template('edit_post.html', form=form)
 
-
-
 @app.route('/', methods=['GET', 'POST'])
 def show_entries():
+	if not session['logged_in'] == True:
+		return redirect(url_for('login'))
 	page = request.args.get('page', 1, type=int)
 	pagination = Entry.query.order_by(Entry.id.desc()).paginate(page, \
 		per_page=app.config['MYJ_PER_PAGE'], error_out=False)
@@ -104,14 +106,15 @@ def login():
 def logout():
 	session.pop('logged_in', None)
 	flash('You were logged out')
-	return redirect(url_for('show_entries'))
+	return redirect(url_for('login'))
 
 @app.template_filter('fmttime')
 def fmttime(value, format="%a, %b %d %Y, %H:%M"):
 	tm = time.localtime(value)
 	return time.strftime(format, tm)
 
-import markdown2
+# the markdown stuff
+# first pick the extensions we want.
 mdExt = [
 	"code-friendly",
 	"fenced-code-blocks",

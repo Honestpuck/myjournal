@@ -10,6 +10,7 @@ setup(
         'flask-bootstrap',
         'flask-wtf',
         'flask-sqlalchemy',
-        'flask-script'
+        'flask-script',
+        'pygments',
     ],
 )
