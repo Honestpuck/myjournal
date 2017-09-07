@@ -7,6 +7,7 @@ It is really more complex than required, but is a good model for a larger projec
 Boootstrap to make things pretty, flask-wtf for nice forms and SQLAlchemy for db stuff. It also uses flask-script so you can run it with a python shell for debugging purposes.
 
 I consider it complete for wide definitions of complete. Branches outside `master` have
-either been merged in or are currently not stable.
+either been merged in or are currently not stable. Any suggestions for new functionality
+will be gratefully accepted.
 
 
